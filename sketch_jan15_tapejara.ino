@@ -86,27 +86,27 @@ void loop() {
     Serial.print(",\t");
 #endif
 
-	millinow = millis();
-	floattime = millinow * 0.001;
-	dt = (millinow - millisold) * 0.001;
-	millisold = millinow;
+    millinow = millis();
+    floattime = millinow * 0.001;
+    dt = (millinow - millisold) * 0.001;
+    millisold = millinow;
 
-	tcommand = (rc_throttle - 480.0) * (0.1216 + ((rc_flap_speed_modifier - 1500) * 0.000125));
+    tcommand = (rc_throttle - 480.0) * (0.1216 + ((rc_flap_speed_modifier - 1500) * 0.000125));
   
-	omegadot = k0 * tcommand - k2 * omega;
-	thetadot = omega;
+    omegadot = k0 * tcommand - k2 * omega;
+    thetadot = omega;
 
-	theta = theta + omega * dt;
-	omega = omega + omegadot * dt;
+    theta = theta + omega * dt;
+    omega = omega + omegadot * dt;
 
     flapmag = ((rc_throttle - 1055) / 45.0 + 1.23) * (1 - (rc_flap_speed_modifier - 1500) * 0.0004);
-	flapdeg = flapmag * sin(theta); //variable amplitude+freq
+    flapdeg = flapmag * sin(theta); //variable amplitude+freq
 
     // rudderamp acts like differential thrust to assist in turning 
     // by increasing/decreasing flap amplitude on either wing.
     rudderamp = ((1500.0 / rc_rudder) - 1) * 0.2 + 1;
     
-	rudder = (int)((rc_rudder - 1500) / 50);
+    rudder = (int)((rc_rudder - 1500) / 50);
     elevator = (rc_elevator / 33 - 45) * 1.25;
 
 #ifdef DOPRINTS
@@ -116,8 +116,8 @@ void loop() {
     //Serial.print(",\t");
 #endif
 
-	flapangle1 = (int)((rudder - (flapdeg * rudderamp) + servo_zero1 - elevator) * 2.0);
-	flapangle2 = (int)((rudder + (flapdeg / rudderamp) + servo_zero2 + elevator) * 2.0);
+    flapangle1 = (int)((rudder - (flapdeg * rudderamp) + servo_zero1 - elevator) * 2.0);
+    flapangle2 = (int)((rudder + (flapdeg / rudderamp) + servo_zero2 + elevator) * 2.0);
 
 #ifdef DOPRINTS
     //Serial.print(flapangle1);
@@ -127,16 +127,16 @@ void loop() {
 #endif
 
     // enable glide mode when throttle is below threshold
-	if (rc_throttle > GLIDE_MODE_THRESHOLD) {
-	  servo_comm1 = flapangle1;
-	  servo_comm2 = flapangle2;
-	} 
-	else {
-	  servo_comm1 = (int)((rudder - glide_deg + servo_zero1 - elevator) * 2.0);
-	  servo_comm2 = (int)((rudder + glide_deg + servo_zero2 + elevator) * 2.0);
-	}
-	
-	
+    if (rc_throttle > GLIDE_MODE_THRESHOLD) {
+      servo_comm1 = flapangle1;
+      servo_comm2 = flapangle2;
+    } 
+    else {
+      servo_comm1 = (int)((rudder - glide_deg + servo_zero1 - elevator) * 2.0);
+      servo_comm2 = (int)((rudder + glide_deg + servo_zero2 + elevator) * 2.0);
+    }
+    
+    
 #ifdef DOPRINTS
     //Serial.print(servo_comm1);
     //Serial.print(",\t");
@@ -146,10 +146,10 @@ void loop() {
 #endif
 
     // by setting zero position of wings higher we can make better use of servos full range
-	servo_comm1 = servo_comm1 + 100; 
-	servo_comm2 = servo_comm2 + 100;
+    servo_comm1 = servo_comm1 + 100; 
+    servo_comm2 = servo_comm2 + 100;
 
-	servo_left.write(servo_comm1); // tell servo to go to position in variable 'pos'
+    servo_left.write(servo_comm1); // tell servo to go to position in variable 'pos'
     servo_right.write(servo_comm2); // tell servo to go to position in variable 'pos'
 }
 
