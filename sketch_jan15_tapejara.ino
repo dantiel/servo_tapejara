@@ -2,7 +2,7 @@
 // Copyright 2021 dantiel
 // original version copyright Steve Morris 10-25-16
 
-#include <DigitalServo.h>
+#include <Servo.h>
 #include <PPMReader.h>
 
 //#define DOPRINTS
@@ -50,7 +50,7 @@ static float k2 = 10.0;
 static float servo_zero1 = 0;
 static float servo_zero2 = 0;
 
-DigitalServo servo_left, servo_right; // create servo object to control a servo
+Servo servo_left, servo_right; // create servo object to control a servo
 
 
 void setup() {
